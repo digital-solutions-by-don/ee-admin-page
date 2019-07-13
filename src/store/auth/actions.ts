@@ -36,4 +36,4 @@ export const register = (newUser: RegisterUser) => async (dispatch: ThunkDispatc
 
 export const logout: ActionCreator<Action> = () => ({type: LOGOUT});
 
-export const welcomeBack: ActionCreator<Action> = () => ({type: WELCOME_BACK});
+export const welcomeBack: ActionCreator<Action> = (token:string) => ({type: WELCOME_BACK, payload: token});

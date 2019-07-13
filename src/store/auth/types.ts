@@ -4,7 +4,8 @@ export interface User {
     last_name: string,
     email: string,
     iat?: Date,
-    exp?: Date
+    exp?: Date,
+    isAdmin: boolean
 }
 
 export interface Credentials {
@@ -28,16 +29,13 @@ export interface Error {
     password2?: string
 }
 
-interface token {
-    token: string
-}
+
 
 export interface AuthState {
     user: User,
     isLoading: boolean,
     isAuth: boolean,
-    isAdmin: boolean,
-    errors: Error
+    errors: Error | null
 }
 
 export const LOGIN_START = 'LOGIN_START';
@@ -55,7 +53,7 @@ interface LoginStartAction {
 
 interface LoginSuccessAction {
     type: typeof LOGIN_SUCCESS,
-    payload: token
+    payload: string
 }
 
 interface LoginFailAction {
@@ -69,7 +67,7 @@ interface RegisterStartAction {
 
 interface RegisterSuccessAction {
     type: typeof REGISTER_SUCCESS,
-    payload: token
+    payload: string
 }
 
 interface RegisterFailAction {
@@ -82,7 +80,8 @@ interface LogoutAction {
 }
 
 interface WelcomeBackAction {
-    type: typeof WELCOME_BACK
+    type: typeof WELCOME_BACK,
+    payload: string
 }
 
 export type AuthActions =
