@@ -43,8 +43,6 @@ export const fetchAllMessages = () => async (dispatch: Dispatch) => {
     }
 };
 
-export const logout = (dispatch: Dispatch) => dispatch<LogoutAction>({type: MessageTypes.LOGOUT});
-
 export const addMessage = (newMessage: SendMessageBody) => async (dispatch: Dispatch) => {
     dispatch<AddMessageActionStart>({type: MessageTypes.ADD_MESSAGE_START});
     try {

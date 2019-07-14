@@ -30,7 +30,6 @@ export interface Error {
 }
 
 
-
 export interface AuthState {
     user: User,
     isLoading: boolean,
@@ -38,58 +37,61 @@ export interface AuthState {
     errors: Error | null
 }
 
-export const LOGIN_START = 'LOGIN_START';
-export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
-export const LOGIN_FAIL = 'LOGIN_FAIL';
-export const REGISTER_START = 'REGISTER_START';
-export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
-export const REGISTER_FAIL = 'REGISTER_FAIL';
-export const LOGOUT = 'LOGOUT';
-export const WELCOME_BACK = 'WELCOME_BACK';
-
-interface LoginStartAction {
-    type: typeof LOGIN_START
+export enum AuthTypes {
+    CREATE_USER_START,
+    CREATE_USER_SUCCESS,
+    CREATE_USER_FAIL,
+    LOGIN_START,
+    LOGIN_SUCCESS,
+    LOGIN_FAIL,
+    LOGOUT,
+    WELCOME_BACK
 }
 
-interface LoginSuccessAction {
-    type: typeof LOGIN_SUCCESS,
+export interface CreateUserStartAction {
+    type: typeof AuthTypes.CREATE_USER_START
+}
+
+export interface CreateUserSuccessAction {
+    type: typeof AuthTypes.CREATE_USER_SUCCESS,
     payload: string
 }
 
-interface LoginFailAction {
-    type: typeof LOGIN_FAIL,
+export interface CreateUserFailAction {
+    type: typeof AuthTypes.CREATE_USER_FAIL,
     payload: Error
 }
 
-interface RegisterStartAction {
-    type: typeof REGISTER_START
+export interface LoginStartAction {
+    type: typeof AuthTypes.LOGIN_START
 }
 
-interface RegisterSuccessAction {
-    type: typeof REGISTER_SUCCESS,
+export interface LoginSuccessAction {
+    type: typeof AuthTypes.LOGIN_SUCCESS
     payload: string
 }
 
-interface RegisterFailAction {
-    type: typeof REGISTER_FAIL,
+export interface LoginFailAction {
+    type: typeof AuthTypes.LOGIN_FAIL
     payload: Error
 }
 
-interface LogoutAction {
-    type: typeof LOGOUT
+export interface LogoutAction {
+    type: typeof AuthTypes.LOGOUT
 }
 
-interface WelcomeBackAction {
-    type: typeof WELCOME_BACK,
+export interface WelcomeBackAction {
+    type: typeof AuthTypes.WELCOME_BACK,
     payload: string
 }
+
 
 export type AuthActions =
-    LoginStartAction
+    CreateUserStartAction
+    | CreateUserSuccessAction
+    | CreateUserFailAction
+    | LoginStartAction
     | LoginSuccessAction
     | LoginFailAction
-    | RegisterStartAction
-    | RegisterSuccessAction
-    | RegisterFailAction
     | LogoutAction
     | WelcomeBackAction

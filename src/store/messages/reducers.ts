@@ -1,4 +1,5 @@
 import {MessageActions, MessageState, MessageTypes} from "./types";
+import {AuthTypes} from "../auth/types";
 
 const initialState: MessageState = {
     messages: [],
@@ -32,7 +33,7 @@ export const messageReducer = (state = initialState, action: MessageActions): Me
             return {...state, isLoading: false, messages: action.payload};
         case MessageTypes.DELETE_MESSAGE_FAIL:
             return {...state, isLoading: false, messages: [], errors: action.payload};
-        case MessageTypes.LOGOUT:
+        case AuthTypes.LOGOUT:
             return initialState;
         default:
             return state;

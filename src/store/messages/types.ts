@@ -1,3 +1,5 @@
+import {AuthTypes} from "../auth/types";
+
 interface Message {
     id: number,
     creator_id: number,
@@ -70,7 +72,7 @@ export interface FetchAllMessagesFailAction {
 }
 
 export interface LogoutAction {
-    type: typeof MessageTypes.LOGOUT
+    type: typeof AuthTypes.LOGOUT
 }
 
 export interface AddMessageActionStart {

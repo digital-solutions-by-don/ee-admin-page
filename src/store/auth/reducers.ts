@@ -1,4 +1,4 @@
-import {AuthActions, AuthState, User} from './types';
+import {AuthActions, AuthState, AuthTypes, User} from './types';
 import jwt_decode from 'jwt-decode';
 
 const initialState: AuthState = {
@@ -8,33 +8,34 @@ const initialState: AuthState = {
         email: '',
         isAdmin: false
     },
-    isAuth: false,
     isLoading: false,
-    errors: null,
+    isAuth: false,
+    errors: null
 };
 
-export function authReducer(state = initialState, action: AuthActions): AuthState {
+export const authReducer = (state = initialState, action: AuthActions): AuthState => {
     switch (action.type) {
-        case 'LOGIN_START':
-            return {...state, isLoading: true};
-        case "LOGIN_SUCCESS":
+        case AuthTypes.LOGIN_START:
+            return {...state, isLoading: true, errors: null};
+        case AuthTypes.LOGIN_SUCCESS:
             const user: User = jwt_decode(action.payload);
             return {...state, isLoading: false, isAuth: true, user};
-        case "LOGIN_FAIL":
+        case AuthTypes.LOGIN_FAIL:
             return {...state, isLoading: false, isAuth: false, errors: action.payload};
-        case "REGISTER_START":
-            return {...state, isLoading: true};
-        case "REGISTER_SUCCESS":
+        case AuthTypes.CREATE_USER_START:
+            return {...state, isLoading: true, errors: null};
+        case AuthTypes.CREATE_USER_SUCCESS:
             const newUser: User = jwt_decode(action.payload);
             return {...state, isLoading: false, isAuth: true, user: newUser};
-        case "REGISTER_FAIL":
+        case AuthTypes.CREATE_USER_FAIL:
             return {...state, isLoading: false, isAuth: false, errors: action.payload};
-        case "LOGOUT":
+        case AuthTypes.LOGOUT:
             return initialState;
-        case "WELCOME_BACK":
+        case AuthTypes.WELCOME_BACK:
             const returningUser: User = jwt_decode(action.payload);
             return {...state, isLoading: false, isAuth: true, user: returningUser};
         default:
             return state;
     }
-}
+
+};

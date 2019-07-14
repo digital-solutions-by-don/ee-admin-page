@@ -1,39 +1,42 @@
-import {ThunkDispatch} from "redux-thunk";
-import {Action, ActionCreator} from "redux";
-import axios from 'axios';
 import {
+    AuthTypes,
+    CreateUserFailAction,
+    CreateUserStartAction,
+    CreateUserSuccessAction,
     Credentials,
-    LOGIN_FAIL,
-    LOGIN_START,
-    LOGIN_SUCCESS,
-    LOGOUT,
-    REGISTER_FAIL,
-    REGISTER_START,
-    REGISTER_SUCCESS,
+    LoginFailAction,
+    LoginStartAction,
+    LoginSuccessAction,
+    LogoutAction,
     RegisterUser,
-    WELCOME_BACK
-} from "./types";
+    WelcomeBackAction
+} from './types';
+import {eeApi} from "../../api/api";
+import {Dispatch} from "redux";
 
-export const login = (credentials: Credentials) => async (dispatch: ThunkDispatch<{}, {}, any>) => {
-    dispatch({type: LOGIN_START});
+export const login = (credentials: Credentials) => async (dispatch: Dispatch) => {
+    dispatch<LoginStartAction>({type: AuthTypes.LOGIN_START});
     try {
-        const response = await axios.post('/auth/login', credentials);
-        dispatch({type: LOGIN_SUCCESS, payload: response.data})
+        const response = await eeApi().post<string>('/users/login', credentials);
+        dispatch<LoginSuccessAction>({type: AuthTypes.LOGIN_SUCCESS, payload: response.data})
     } catch (error) {
-        dispatch({type: LOGIN_FAIL, payload: error.response})
+        dispatch<LoginFailAction>({type: AuthTypes.LOGIN_FAIL, payload: error.response.data})
     }
 };
 
-export const register = (newUser: RegisterUser) => async (dispatch: ThunkDispatch<{}, {}, any>) => {
-    dispatch({type: REGISTER_START});
+export const register = (newUser: RegisterUser) => async (dispatch: Dispatch) => {
+    dispatch<CreateUserStartAction>({type: AuthTypes.CREATE_USER_START});
     try {
-        const response = await axios.post('/auth/register', newUser);
-        dispatch({type: REGISTER_SUCCESS, payload: response.data})
+        const response = await eeApi().post<string>('/users/register', newUser);
+        dispatch<CreateUserSuccessAction>({type: AuthTypes.CREATE_USER_SUCCESS, payload: response.data});
     } catch (error) {
-        dispatch({type: REGISTER_FAIL, payload: error.response})
+        dispatch<CreateUserFailAction>({type: AuthTypes.CREATE_USER_FAIL, payload: error.response.data})
     }
 };
 
-export const logout: ActionCreator<Action> = () => ({type: LOGOUT});
+export const logout = (dispatch: Dispatch) => dispatch<LogoutAction>({type: AuthTypes.LOGOUT});
 
-export const welcomeBack: ActionCreator<Action> = (token:string) => ({type: WELCOME_BACK, payload: token});
+export const welcomeBack = (token: string) => (dispatch: Dispatch) => dispatch<WelcomeBackAction>({
+    type: AuthTypes.WELCOME_BACK,
+    payload: token
+});
