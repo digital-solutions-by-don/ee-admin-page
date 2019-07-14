@@ -1,16 +1,22 @@
-interface MessageObject {
+interface Message {
     id: number,
-    user_id: number,
-    subject: string,
-    message: string,
-    createdAt: Date
+    creator_id: number,
+    message_subject: string,
+    message_body: string,
+    created_at: Date
 }
 
-type Messages = Array<MessageObject>;
+export interface SendMessageBody {
+    creator_id: number,
+    message_subject: string,
+    message_body: string,
+}
 
-interface Error {
-    subject?: string
-    message?: string
+export type Messages = Array<Message>;
+
+export interface Error {
+    subject_subject?: string
+    message_body?: string
 }
 
 export interface MessageState {
@@ -19,44 +25,80 @@ export interface MessageState {
     errors: Error | null
 }
 
-const FETCH_MESSAGES_START = 'FETCH_MESSAGES_START';
-const FETCH_MESSAGES_SUCCESS = 'FETCH_MESSAGES_SUCCESS';
-const FETCH_MESSAGES_FAIL = 'FETCH_MESSAGES_FAIL';
-const FETCH_ALL_MESSAGES_START = 'FETCH_ALL_MESSAGES_START';
-const FETCH_ALL_MESSAGES_SUCCESS = 'FETCH_ALL_MESSAGES_SUCCESS';
-const FETCH_ALL_MESSAGES_FAIL = 'FETCH_ALL_MESSAGES_FAIL';
-const LOGOUT = 'LOGOUT';
-
-interface FetchMessagesStartAction {
-    type: typeof FETCH_MESSAGES_START
+export enum MessageTypes {
+    FETCH_MESSAGES_START,
+    FETCH_MESSAGES_FAIL,
+    FETCH_MESSAGES_SUCCESS,
+    FETCH_ALL_MESSAGES_START,
+    FETCH_ALL_MESSAGES_SUCCESS,
+    FETCH_ALL_MESSAGES_FAIL,
+    LOGOUT,
+    ADD_MESSAGE_START,
+    ADD_MESSAGE_SUCCESS,
+    ADD_MESSAGE_FAIL,
+    DELETE_MESSAGE_START,
+    DELETE_MESSAGE_SUCCESS,
+    DELETE_MESSAGE_FAIL,
 }
 
-interface FetchMessagesSuccessAction {
-    type: typeof FETCH_MESSAGES_SUCCESS,
+export interface FetchMessagesStartAction {
+    type: typeof MessageTypes.FETCH_MESSAGES_START
+}
+
+export interface FetchMessagesSuccessAction {
+    type: typeof MessageTypes.FETCH_MESSAGES_SUCCESS,
     payload: Messages
 }
 
-interface FetchMessagesFailAction {
-    type: typeof FETCH_MESSAGES_FAIL,
+export interface FetchMessagesFailAction {
+    type: typeof MessageTypes.FETCH_MESSAGES_FAIL,
     payload: Error
 }
 
-interface FetchAllMessagesStartAction {
-    type: typeof FETCH_ALL_MESSAGES_START
+export interface FetchAllMessagesStartAction {
+    type: typeof MessageTypes.FETCH_ALL_MESSAGES_START
 }
 
-interface FetchAllMessagesSuccessAction {
-    type: typeof FETCH_ALL_MESSAGES_SUCCESS,
+export interface FetchAllMessagesSuccessAction {
+    type: typeof MessageTypes.FETCH_ALL_MESSAGES_SUCCESS,
     payload: Messages
 }
 
-interface FetchAllMessagesFailAction {
-    type: typeof FETCH_ALL_MESSAGES_FAIL,
+export interface FetchAllMessagesFailAction {
+    type: typeof MessageTypes.FETCH_ALL_MESSAGES_FAIL,
     payload: Error
 }
 
-interface LogoutAction {
-    type: typeof LOGOUT
+export interface LogoutAction {
+    type: typeof MessageTypes.LOGOUT
+}
+
+export interface AddMessageActionStart {
+    type: typeof MessageTypes.ADD_MESSAGE_START
+}
+
+export interface AddMessageActionSuccess {
+    type: typeof MessageTypes.ADD_MESSAGE_SUCCESS,
+    payload: Messages
+}
+
+export interface AddMessageActionFail {
+    type: typeof MessageTypes.ADD_MESSAGE_FAIL,
+    payload: Error
+}
+
+export interface DeleteMessageActionStart {
+    type: typeof MessageTypes.DELETE_MESSAGE_START
+}
+
+export interface DeleteMessageActionSuccess {
+    type: typeof MessageTypes.DELETE_MESSAGE_SUCCESS,
+    payload: Messages
+}
+
+export interface DeleteMessageActionFail {
+    type: typeof MessageTypes.DELETE_MESSAGE_FAIL,
+    payload: Error
 }
 
 export type MessageActions =
@@ -65,4 +107,11 @@ export type MessageActions =
     | FetchMessagesSuccessAction
     | FetchAllMessagesStartAction
     | FetchAllMessagesSuccessAction
-    | FetchAllMessagesFailAction | LogoutAction
+    | FetchAllMessagesFailAction
+    | LogoutAction
+    | AddMessageActionStart
+    | AddMessageActionFail
+    | AddMessageActionSuccess
+    | DeleteMessageActionStart
+    | DeleteMessageActionSuccess
+    | DeleteMessageActionFail
